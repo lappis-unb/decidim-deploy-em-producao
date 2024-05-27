@@ -1,0 +1,15 @@
+---
+- name: Clonar repostirório do projeto
+  import_playbook: playbooks/clonar_repositorio_decidim.yaml
+
+- name: Copia arquivos de configuração para a pasta do Decidim 
+  import_playbook: playbooks/copia_arquivos_configuracao.yaml
+
+- name: Copia Script de Deploy
+  import_playbook: playbooks/copia_scripts.yaml
+
+- name: Sobe serviços em Docker (Redis + Postgres)
+  import_playbook: playbooks/sobe_containers.yaml
+
+- name: Copia arquivos de serviços
+  import_playbook: playbooks/copia_arquivos_servicos.yaml

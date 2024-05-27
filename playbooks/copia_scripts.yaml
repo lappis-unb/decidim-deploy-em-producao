@@ -1,0 +1,12 @@
+---
+- name: Copia Scripts
+  hosts: decidim_server_base
+  become: yes
+  tasks:
+    - name: Copia script de deploy
+      copy:
+        src: ../scripts/build_decidim_deploy.sh
+        dest: /srv/build_decidim_deploy.sh
+        owner: "{{ regular_user }}"
+        group: "{{ regular_user }}"
+        mode: 0775

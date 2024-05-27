@@ -1,0 +1,28 @@
+# - name: Apply common configurations
+#   hosts: all
+#   roles:
+#     - common
+---
+- name: Instala dependências
+  import_playbook: playbooks/instala_dependencias_linux.yaml
+
+- name: Instala Docker
+  import_playbook: playbooks/instala_docker.yaml
+
+- name: Instala Node 16
+  import_playbook: playbooks/instala_node_16.yaml
+
+- name: Instala Yarn
+  import_playbook: playbooks/instala_yarn.yaml
+
+- name: Instala instala
+  import_playbook: playbooks/instala_nginx.yaml
+
+- name: Cria usuários
+  import_playbook: playbooks/cria_usuarios_decide_nginx.yaml
+
+- name: Configura Permissões
+  import_playbook: playbooks/configura_permissoes.yaml
+
+- name: Instala Ruby
+  import_playbook: playbooks/instala_ruby.yaml

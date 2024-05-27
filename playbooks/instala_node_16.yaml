@@ -1,0 +1,28 @@
+---
+- name: Install Node.js 16 on Debian 12
+  hosts: decidim_server_base
+  become: true  # Requires elevated privileges
+  tasks:
+    # Install prerequisites using apt
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install curl
+      apt:
+        name: curl
+        state: present
+
+    - name: Download NodeSource installation script (on remote host)
+      shell: curl -sL https://deb.nodesource.com/setup_16.x | bash -
+
+    # Update apt cache again
+    - name: Update apt cache after adding repository
+      apt:
+        update_cache: yes
+
+    # Install Node.js
+    - name: Install Node.js 16
+      apt:
+        name: nodejs
+        state: present

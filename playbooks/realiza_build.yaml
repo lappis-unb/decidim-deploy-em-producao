@@ -1,0 +1,25 @@
+---
+- name: Realiza Build do Decidim
+  hosts: decidim_server_base
+  become: yes
+  become_user: "{{ regular_user }}"
+
+  tasks:
+    - name: Ensure script has execute permission
+      file:
+        path: /srv/build_decidim_deploy.sh
+        mode: '0755'
+        owner: "{{ regular_user }}"
+        group: "{{ regular_user }}"
+
+    - name: Realiza Build
+      shell: |
+        export PATH="$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH"
+        /bin/bash /srv/build_decidim_deploy.sh
+      args:
+        executable: /bin/bash
+      register: build_output
+
+    - name: Debug Build Output
+      debug:
+        var: build_output.stdout_lines

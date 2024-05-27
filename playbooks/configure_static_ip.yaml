@@ -1,0 +1,54 @@
+---
+- name: Configure Debian 12 with a Static IP
+  hosts: decidim_server_base
+  become: yes
+  vars:
+    interface_name: "enX0"  # Replace with your interface name
+    static_ip: "10.0.0.216"  # Replace with your desired static IP
+    netmask: "255.255.255.0"  # Replace with your netmask
+    gateway: "10.0.0.1"  # Replace with your gateway
+    dns_servers:  # Replace with your DNS servers
+      - "8.8.8.8"
+      - "8.8.4.4"
+
+  tasks:
+    - name: Update the apt package cache
+      apt:
+        update_cache: yes
+
+    - name: Install net-tools (if not installed)
+      apt:
+        name: net-tools
+        state: present
+
+    - name: Ensure the /etc/network/interfaces file exists on remote host
+      stat:
+        path: /etc/network/interfaces
+      register: interfaces_file
+
+    - name: Backup existing interfaces file if it exists
+      copy:
+        src: /etc/network/interfaces
+        dest: /etc/network/interfaces.bak
+        remote_src: yes
+      when: interfaces_file.stat.exists
+
+    - name: Configure static IP for {{ interface_name }}
+      blockinfile:
+        path: /etc/network/interfaces
+        block: |
+          auto {{ interface_name }}
+          iface {{ interface_name }} inet static
+            address {{ static_ip }}
+            netmask {{ netmask }}
+            gateway {{ gateway }}
+            dns-nameservers {{ dns_servers | join(' ') }}
+        insertafter: "^# The primary network interface"
+      notify:
+        - Restart networking
+
+  handlers:
+    - name: Restart networking
+      service:
+        name: networking
+        state: restarted

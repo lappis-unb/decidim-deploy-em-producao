@@ -1,0 +1,23 @@
+---
+- name: Install Yarn on Debian 12
+  hosts: decidim_server_base
+  become: yes
+  tasks:
+    - name: Add Yarn repository key
+      apt_key:
+        url: https://dl.yarnpkg.com/debian/pubkey.gpg
+        state: present
+
+    - name: Add Yarn APT repository
+      apt_repository:
+        repo: deb https://dl.yarnpkg.com/debian/ stable main
+        state: present
+
+    - name: Update apt package cache
+      apt:
+        update_cache: yes
+
+    - name: Install Yarn
+      apt:
+        name: yarn
+        state: present

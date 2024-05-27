@@ -1,0 +1,36 @@
+---
+- name: Copy Config files
+  hosts: decidim_server_base
+  become: yes
+  tasks:
+    - name: Copy .env file from source machine to server
+      copy:
+        src: ../arquivos_ambiente/.env
+        dest: /srv/decide/.env
+        owner: "{{ regular_user }}"
+        group: "{{ regular_user }}"
+        mode: 0664
+
+    - name: Copy puma.production.rb
+      copy:
+        src: ../arquivos_ambiente/config/puma.production.rb
+        dest: /srv/decide/config/puma.production.rb
+        owner: "{{ regular_user }}"
+        group: "{{ regular_user }}"
+        mode: 0664
+
+    - name: Copy production.rb
+      copy:
+        src: ../arquivos_ambiente/config/environments/production.rb
+        dest: /srv/decide/config/environments/production.rb
+        owner: "{{ regular_user }}"
+        group: "{{ regular_user }}"
+        mode: 0664
+
+    - name: Copy production.rb
+      copy:
+        src: ../arquivos_ambiente/docker-compose-backstage.yml
+        dest: /srv/decide/docker-compose-backstage.yml
+        owner: "{{ regular_user }}"
+        group: "{{ regular_user }}"
+        mode: 0664

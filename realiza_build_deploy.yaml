@@ -1,0 +1,15 @@
+---
+- name: Realiza Build do Decidim 
+  import_playbook: playbooks/realiza_build.yaml
+
+- name: Sobe o serviço Sidekiq
+  import_playbook: playbooks/start_sidekiq_service.yaml
+  
+- name: Sobe o serviço Puma
+  import_playbook: playbooks/start_puma_service.yaml
+  
+- name: Sobe o serviço nginx
+  import_playbook: playbooks/start_nginx_service.yaml
+
+- name: Lista serviços
+  import_playbook: list_running_services.yaml

@@ -1,0 +1,92 @@
+---
+- name: Install and configure Ruby 3.0.4 using rbenv
+  hosts: decidim_server_base
+
+  tasks:
+    - name: Ensure necessary dependencies are installed
+      apt:
+        name:
+          - git
+          - curl
+          - build-essential
+          - libssl-dev
+          - libreadline-dev
+          - zlib1g-dev
+        state: present
+      when: ansible_os_family == 'Debian'
+      become: yes
+      become_user: root
+
+    - name: Clone rbenv repository
+      git:
+        repo: 'https://github.com/rbenv/rbenv.git'
+        # dest: "{{ ansible_env.HOME }}/.rbenv"
+        dest: "/home/{{ regular_user }}/.rbenv"
+        version: 'master'
+        update: no
+      become: yes
+      become_user: "{{ regular_user }}"
+
+    - name: Clone ruby-build repository
+      git:
+        repo: 'https://github.com/rbenv/ruby-build.git'
+        # dest: "{{ ansible_env.HOME }}/.rbenv/plugins/ruby-build"
+        dest: "/home/{{ regular_user }}/.rbenv/plugins/ruby-build"
+        version: 'master'
+        update: no
+      become: yes
+      become_user: "{{ regular_user }}"
+
+    - name: Add rbenv to PATH
+      shell: 'echo ''export PATH="/home/{{ regular_user }}/.rbenv/bin:$PATH"'' >> /home/{{ regular_user }}/.bashrc'
+      # shell: 'echo ''export PATH="{{ ansible_env.HOME }}/.rbenv/bin:$PATH"'' >> {{ ansible_env.HOME }}/.bashrc'
+      args:
+        executable: /bin/bash
+      become: yes
+      become_user: root
+
+    - name: Add rbenv init to bashrc
+      # shell: 'echo ''eval "$(rbenv init -)"'' >> {{ ansible_env.HOME }}/.bashrc'
+      shell: 'echo ''eval "$(rbenv init -)"'' >> /home/{{ regular_user }}/.bashrc'
+      args:
+        executable: /bin/bash
+      become: yes
+      become_user: "{{ regular_user }}"
+
+    - name: Source .bashrc
+      shell: source ~/.bashrc
+      args:
+        executable: /bin/bash
+      become: yes
+      become_user: "{{ regular_user }}"
+
+    - name: Install Ruby 3.0.4 using rbenv
+      # shell: "{{ ansible_env.HOME }}/.rbenv/bin/rbenv install 3.0.4"
+      shell: "/home/{{ regular_user }}/.rbenv/bin/rbenv install 3.0.4"
+      args:
+        executable: /bin/bash
+      environment:
+        # RBENV_ROOT: "{{ ansible_env.HOME }}/.rbenv"
+        RBENV_ROOT: "/home/{{ regular_user }}/.rbenv"
+
+      become: yes
+      become_user: "{{ regular_user }}"
+
+    - name: Set Ruby 3.0.4 as global version using rbenv
+      # shell: "{{ ansible_env.HOME }}/.rbenv/bin/rbenv global 3.0.4"
+      shell: "/home/{{ regular_user }}/.rbenv/bin/rbenv global 3.0.4"
+      args:
+        executable: /bin/bash
+      environment:
+        # RBENV_ROOT: "{{ ansible_env.HOME }}/.rbenv"
+        RBENV_ROOT: "/home/{{ regular_user }}/.rbenv"
+      become: yes
+      become_user: "{{ regular_user }}"
+
+    - name: Install Bundler
+      shell: |
+        export PATH="/home/{{ regular_user }}/.rbenv/bin:$PATH"
+        eval "$(rbenv init -)"
+        gem install bundler -v '~> 2.2.33'
+      become: yes
+      become_user: "{{ regular_user }}"

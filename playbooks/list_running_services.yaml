@@ -1,0 +1,13 @@
+---
+- name: List all running systemctl services
+  hosts: decidim_server_base
+  become: yes
+
+  tasks:
+    - name: List all running systemctl services
+      command: systemctl list-units --type=service --state=running
+      register: running_services
+
+    - name: Print running services
+      debug:
+        var: running_services.stdout_lines

@@ -1,0 +1,28 @@
+---
+- name: Enable and start Sidekiq service
+  hosts: decidim_server_base
+  become: yes
+  tasks:
+    - name: Ensure Sidekiq service file exists
+      stat:
+        path: /etc/systemd/system/decide-sidekiq.service
+      register: puma_service_file
+
+    - name: Fail if Sidekiq service file does not exist
+      fail:
+        msg: "Puma service file does not exist at /etc/systemd/system/decide-sidekiq.service"
+      when: not puma_service_file.stat.exists
+
+    - name: Reload systemd to recognize new service
+      command: systemctl daemon-reload
+      when: puma_service_file.stat.exists
+
+    - name: Enable Sidekiq service
+      systemd:
+        name: decide-sidekiq
+        enabled: yes
+
+    - name: Start Sidekiq service
+      systemd:
+        name: decide-sidekiq
+        state: started
