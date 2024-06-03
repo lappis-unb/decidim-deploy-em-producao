@@ -1,5 +1,8 @@
 # Change to match your CPU core count
 workers 2
+worker_timeout 120
+# Fix for deploy with large number of CPUs (workers)
+worker_boot_timeout 120
 
 # Min and Max threads per worker
 threads 6, 9
