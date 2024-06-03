@@ -1,6 +1,6 @@
 # Change to match your CPU core count
 workers 2
-worker_timeout 120
+worker_timeout 60
 # Fix for deploy with large number of CPUs (workers)
 worker_boot_timeout 120
 
