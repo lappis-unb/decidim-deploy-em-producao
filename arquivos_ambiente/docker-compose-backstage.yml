@@ -12,6 +12,7 @@ services:
       - postgres-data:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=postgres
+    restart: always
 
   redis-queue:
     container_name: redis-queue
@@ -22,6 +23,7 @@ services:
       - decidim-network
     volumes:
       - redis-queue-data:/data
+    restart: always
 
   redis-cache:
     container_name: redis-cache
@@ -32,6 +34,7 @@ services:
       - decidim-network
     volumes:
       - redis-cache-data:/data
+    restart: always
 
 volumes:
   redis-queue-data:
