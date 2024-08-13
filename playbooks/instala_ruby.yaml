@@ -5,13 +5,7 @@
   tasks:
     - name: Ensure necessary dependencies are installed
       apt:
-        name:
-          - git
-          - curl
-          - build-essential
-          - libssl-dev
-          - libreadline-dev
-          - zlib1g-dev
+        name: "{{ ruby_pre_requisites }}"
         state: present
       when: ansible_os_family == 'Debian'
       become: yes
@@ -19,7 +13,7 @@
 
     - name: Clone rbenv repository
       git:
-        repo: 'https://github.com/rbenv/rbenv.git'
+        repo:  "{{ rbenv_repo_url }}"
         # dest: "{{ ansible_env.HOME }}/.rbenv"
         dest: "/home/{{ regular_user }}/.rbenv"
         version: 'master'
@@ -29,7 +23,7 @@
 
     - name: Clone ruby-build repository
       git:
-        repo: 'https://github.com/rbenv/ruby-build.git'
+        repo: "{{ ruby_build_repo_url }}"
         # dest: "{{ ansible_env.HOME }}/.rbenv/plugins/ruby-build"
         dest: "/home/{{ regular_user }}/.rbenv/plugins/ruby-build"
         version: 'master'
