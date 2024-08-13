@@ -7,7 +7,6 @@
       apt:
         name: "{{ ruby_pre_requisites }}"
         state: present
-      when: ansible_os_family == 'Debian'
       become: yes
       become_user: root
 
