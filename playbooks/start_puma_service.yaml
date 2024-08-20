@@ -26,3 +26,9 @@
       systemd:
         name: "{{ puma_service_name }}"
         state: started
+    
+    - name: Wait for Puma to create puma.sock
+      wait_for:
+        path: /srv/decide/tmp/sockets/puma.sock
+        state: present
+        timeout: 30
