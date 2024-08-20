@@ -5,12 +5,12 @@
   tasks:
     - name: Ensure Sidekiq service file exists
       stat:
-        path: /etc/systemd/system/decide-sidekiq.service
+        path: /etc/systemd/system/{{ sidekiq_service_name }}.service
       register: puma_service_file
 
     - name: Fail if Sidekiq service file does not exist
       fail:
-        msg: "Puma service file does not exist at /etc/systemd/system/decide-sidekiq.service"
+        msg: "Puma service file does not exist at /etc/systemd/system/{{ sidekiq_service_name }}.service"
       when: not puma_service_file.stat.exists
 
     - name: Reload systemd to recognize new service
@@ -19,10 +19,10 @@
 
     - name: Enable Sidekiq service
       systemd:
-        name: decide-sidekiq
+        name: "{{ sidekiq_service_name }}"
         enabled: yes
 
     - name: Start Sidekiq service
       systemd:
-        name: decide-sidekiq
+        name: "{{ sidekiq_service_name }}"
         state: started
