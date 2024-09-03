@@ -32,3 +32,14 @@
         path: /srv/decide/tmp/sockets/puma.sock
         state: present
         timeout: 30
+
+    - name: Grant read, write, and execute to group 'decide' for puma.sock file 
+      file:
+        path: /srv/decide/tmp/sockets/puma.sock
+        group: decide
+        mode: '0775'
+    
+    - name: Restart puma service
+      systemd:
+        name: "{{ puma_service_name }}"
+        state: restarted
