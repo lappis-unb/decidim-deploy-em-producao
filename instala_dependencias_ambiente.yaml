@@ -15,7 +15,7 @@
 - name: Instala Yarn
   import_playbook: playbooks/instala_yarn.yaml
 
-- name: Instala instala
+- name: Instala Nginx
   import_playbook: playbooks/instala_nginx.yaml
 
 - name: Cria usuários

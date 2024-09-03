@@ -1,5 +1,5 @@
 ---
-- name: Clonar repostirório do projeto
+- name: Clonar repositório do projeto
   import_playbook: playbooks/clonar_repositorio_decidim.yaml
 
 - name: Copia arquivos de configuração para a pasta do Decidim 
