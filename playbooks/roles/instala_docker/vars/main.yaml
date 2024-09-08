@@ -1,0 +1,2 @@
+docker_params:
+  - { docker_pre_requisites: "docker.io", docker_gpg_key_url: "present" , docker_architecture: }

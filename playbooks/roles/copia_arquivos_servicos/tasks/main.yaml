@@ -1,0 +1,7 @@
+# roles/copia_arquivos/tasks/main.yml
+- name: Copiar arquivos de configuração
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+  with_items: "{{ arquivos_para_copiar }}"
