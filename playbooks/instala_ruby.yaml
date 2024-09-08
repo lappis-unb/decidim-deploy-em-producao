@@ -5,21 +5,14 @@
   tasks:
     - name: Ensure necessary dependencies are installed
       apt:
-        name:
-          - git
-          - curl
-          - build-essential
-          - libssl-dev
-          - libreadline-dev
-          - zlib1g-dev
+        name: "{{ ruby_pre_requisites }}"
         state: present
-      when: ansible_os_family == 'Debian'
       become: yes
       become_user: root
 
     - name: Clone rbenv repository
       git:
-        repo: 'https://github.com/rbenv/rbenv.git'
+        repo:  "{{ rbenv_repo_url }}"
         # dest: "{{ ansible_env.HOME }}/.rbenv"
         dest: "/home/{{ regular_user }}/.rbenv"
         version: 'master'
@@ -29,7 +22,7 @@
 
     - name: Clone ruby-build repository
       git:
-        repo: 'https://github.com/rbenv/ruby-build.git'
+        repo: "{{ ruby_build_repo_url }}"
         # dest: "{{ ansible_env.HOME }}/.rbenv/plugins/ruby-build"
         dest: "/home/{{ regular_user }}/.rbenv/plugins/ruby-build"
         version: 'master'
@@ -60,6 +53,28 @@
       become: yes
       become_user: "{{ regular_user }}"
 
+    - name: List all installed Ruby versions
+      shell: "/home/{{ regular_user }}/.rbenv/bin/rbenv versions --bare"
+      args:
+        executable: /bin/bash
+      register: ruby_versions
+      become: yes
+      become_user: "{{ regular_user }}"
+
+    - name: Print installed Ruby versions
+      debug:
+        msg: "Installed Ruby versions: {{ ruby_versions.stdout_lines }}"
+
+    - name: Check if Ruby 3.0.4 is already installed
+      become: yes
+      shell: "/home/{{ regular_user }}/.rbenv/bin/rbenv versions --bare | grep -w 3.0.4"
+      args:
+        executable: /bin/bash
+      register: ruby_check
+      ignore_errors: true
+      become: yes
+      become_user: "{{ regular_user }}"
+
     - name: Install Ruby 3.0.4 using rbenv
       # shell: "{{ ansible_env.HOME }}/.rbenv/bin/rbenv install 3.0.4"
       shell: "/home/{{ regular_user }}/.rbenv/bin/rbenv install 3.0.4"
@@ -68,9 +83,9 @@
       environment:
         # RBENV_ROOT: "{{ ansible_env.HOME }}/.rbenv"
         RBENV_ROOT: "/home/{{ regular_user }}/.rbenv"
-
       become: yes
       become_user: "{{ regular_user }}"
+      when: ruby_check.rc != 0 
 
     - name: Set Ruby 3.0.4 as global version using rbenv
       # shell: "{{ ansible_env.HOME }}/.rbenv/bin/rbenv global 3.0.4"

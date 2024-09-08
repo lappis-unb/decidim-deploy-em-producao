@@ -1,5 +1,5 @@
 ---
-- name: Install Nginx on Debian 12
+- name: Install Nginx on Linux
   hosts: decidim_server_base
   become: yes
   tasks:
@@ -9,7 +9,7 @@
 
     - name: Install Nginx
       apt:
-        name: nginx
+        name: "{{ nginx_package_name }}"
         state: present
 
     - name: Ensure Nginx is enabled and started

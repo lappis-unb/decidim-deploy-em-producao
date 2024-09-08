@@ -12,4 +12,4 @@
   import_playbook: playbooks/start_nginx_service.yaml
 
 - name: Lista serviços
-  import_playbook: list_running_services.yaml
+  import_playbook: playbooks/list_running_services.yaml
