@@ -1,0 +1,35 @@
+---
+# roles/configura_permissoes/tasks/main.yml
+- name: Set umask for 'decide' user
+  lineinfile:
+    dest: /home/"{{ regular_user }}"/.bashrc
+    line: "umask {{ umask_value }}"
+    insertafter: EOF
+    state: present
+    create: yes
+
+- name: Change owner and group of /srv directory
+  file:
+    path: "{{ srv_directory }}"
+    owner: "{{ regular_user }}"
+    group: "{{ regular_user }}"
+  
+- name: Set default ACL for directories created by 'decide'
+  acl:
+    path: "{{ srv_directory }}"
+    entity: "{{ regular_user }}"
+    etype: user
+    permissions: rwx
+    state: present
+    default: yes
+    recursive: yes
+
+- name: Set default ACL for files created by 'decide'
+  acl:
+    path: "{{ srv_directory }}"
+    entity: "{{ regular_user }}"
+    etype: user
+    permissions: rw-
+    state: present
+    default: yes
+    recursive: yes

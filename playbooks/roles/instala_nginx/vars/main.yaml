@@ -1,0 +1,2 @@
+# roles/instala_nginx/vars/main.yaml
+nginx_package_name: "nginx"

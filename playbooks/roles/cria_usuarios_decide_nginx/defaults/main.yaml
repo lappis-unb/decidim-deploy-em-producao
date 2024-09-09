@@ -1,0 +1,6 @@
+# roles/cria_usuarios_decide_nginx/defaults/main.yaml
+regular_user: "decide"
+user_password: "decide"
+nginx_user: nginx
+decide_group: decide
+puma_nginx_group: puma-nginx

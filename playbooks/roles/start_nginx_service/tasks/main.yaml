@@ -1,0 +1,19 @@
+---
+# roles/start_nginx_service/tasks/main.yml
+- name: Change ownership and permissions of puma.sock
+  file:
+    path: "{{ puma_socket.path }}"
+    owner: "{{ puma_socket.owner }}"
+    group: "{{ puma_socket.group }}"
+    mode: "{{ puma_socket.mode }}"
+  become: yes
+
+- name: Reload systemd manager configuration
+  command: systemctl daemon-reload
+  become: yes
+
+- name: Restart Nginx service
+  systemd:
+    name: "{{ nginx_service.name }}"
+    state: restarted
+  become: yes

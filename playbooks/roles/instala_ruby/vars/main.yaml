@@ -1,0 +1,8 @@
+# roles/instala_ruby/vars/main.yaml
+ruby_pre_requisites:
+  - git
+  - curl
+  - build-essential
+  - libssl-dev
+  - libreadline-dev
+  - zlib1g-dev

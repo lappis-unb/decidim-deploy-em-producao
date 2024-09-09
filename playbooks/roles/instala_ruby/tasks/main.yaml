@@ -1,0 +1,88 @@
+---
+# roles/instala_ruby/tasks/main.yml
+- name: Ensure necessary dependencies are installed
+  apt:
+    name: "{{ ruby_pre_requisites }}"
+    state: present
+  become: yes
+  become_user: root
+
+- name: Clone rbenv repository
+  git:
+    repo:  "{{ rbenv_repo_url }}"
+    dest: "/home/{{ regular_user }}/.rbenv"
+    version: 'master'
+    update: no
+  become: yes
+  become_user: "{{ regular_user }}"
+
+- name: Clone ruby-build repository
+  git:
+    repo: "{{ ruby_build_repo_url }}"
+    dest: "/home/{{ regular_user }}/.rbenv/plugins/ruby-build"
+    version: 'master'
+    update: no
+  become: yes
+  become_user: "{{ regular_user }}"
+
+- name: Add rbenv to PATH
+  lineinfile:
+    dest: /home/{{ regular_user }}/.bashrc
+    line: 'export PATH="/home/{{ regular_user }}/.rbenv/bin:$PATH"'
+    insertafter: EOF
+    state: present
+    create: yes
+  become: yes
+  become_user: root
+
+- name: Add rbenv init to bashrc
+  lineinfile:
+    dest: /home/{{ regular_user }}/.bashrc
+    line: 'eval "$(rbenv init -)"'
+    insertafter: EOF
+    state: present
+  become: yes
+  become_user: "{{ regular_user }}"
+
+- name: Source .bashrc
+  shell: source /home/{{ regular_user }}/.bashrc
+  args:
+    executable: /bin/bash
+  become: yes
+  become_user: "{{ regular_user }}"
+
+- name: Check if Ruby {{ ruby_version }} is already installed
+  shell: "/home/{{ regular_user }}/.rbenv/bin/rbenv versions --bare | grep -w {{ ruby_version }}"
+  args:
+    executable: /bin/bash
+  register: ruby_check
+  ignore_errors: true
+  become: yes
+  become_user: "{{ regular_user }}"
+
+- name: Install Ruby {{ ruby_version }} using rbenv
+  shell: "/home/{{ regular_user }}/.rbenv/bin/rbenv install {{ ruby_version }}"
+  args:
+    executable: /bin/bash
+  environment:
+    RBENV_ROOT: "/home/{{ regular_user }}/.rbenv"
+  become: yes
+  become_user: "{{ regular_user }}"
+  when: ruby_check.rc != 0
+
+- name: Set Ruby {{ ruby_version }} as global version using rbenv
+  shell: "/home/{{ regular_user }}/.rbenv/bin/rbenv global {{ ruby_version }}"
+  args:
+    executable: /bin/bash
+  environment:
+    RBENV_ROOT: "/home/{{ regular_user }}/.rbenv"
+  become: yes
+  become_user: "{{ regular_user }}"
+
+- name: Install Bundler
+  shell: |
+    export PATH="/home/{{ regular_user }}/.rbenv/bin:$PATH"
+    eval "$(rbenv init -)"
+    gem install bundler -v '{{ bundler_version }}'
+  become: yes
+  become_user: "{{ regular_user }}"

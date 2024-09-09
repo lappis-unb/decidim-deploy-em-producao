@@ -1,0 +1,10 @@
+# roles/realiza_build/defaults/main.yaml
+---
+regular_user: decide
+scripts_para_configurar:
+  - { path: '/srv/build_decidim_deploy.sh', mode: '0755' }
+
+build_script:
+  command: '/srv/build_decidim_deploy.sh'
+  environment:
+    PATH: "$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH"

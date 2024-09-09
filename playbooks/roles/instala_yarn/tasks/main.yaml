@@ -1,0 +1,21 @@
+---
+# roles/instala_yarn/tasks/main.yml
+
+- name: Add Yarn repository key
+  apt_key:
+    url: "{{ yarn_repo_key_url }}"
+    state: present
+
+- name: Add Yarn APT repository
+  apt_repository:
+    repo: deb "{{ yarn_repo_url }}" stable main
+    state: present
+
+- name: Update apt package cache
+  apt:
+    update_cache: yes
+
+- name: Install Yarn
+  apt:
+    name: "{{ yarn_package_name }}"
+    state: present

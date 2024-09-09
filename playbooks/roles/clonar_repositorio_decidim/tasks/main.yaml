@@ -1,0 +1,35 @@
+---
+# roles/clonar_repositorio_decidim/tasks/main.yml
+- name: Instalar dependências necessárias
+  apt:
+    name: git
+    state: present
+  become: yes
+  become_user: root
+
+- name: Verificar se a pasta {{ decidim_directory }} existe
+  stat:
+    path: "{{ decidim_directory }}"
+  register: decide_folder
+  become: yes
+  become_user: "{{ regular_user }}"
+
+- name: Criar a pasta {{ decidim_directory }} se não existir
+  file:
+    path: "{{ decidim_directory }}"
+    state: directory
+    owner: "{{ regular_user }}"
+    group: "{{ regular_user }}"
+    mode: '0775'
+  when: not decide_folder.stat.exists
+  become: yes
+  become_user: root
+
+- name: Clonar o repositório na tag {{ repo_tag }}
+  git:
+    repo: "{{ repo_url }}"
+    dest: "{{ decidim_directory }}"
+    version: "{{ repo_tag }}"
+    force: yes
+  become: yes
+  become_user: "{{ regular_user }}"

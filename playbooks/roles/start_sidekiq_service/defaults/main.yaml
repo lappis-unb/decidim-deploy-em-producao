@@ -1,0 +1,5 @@
+# roles/start_sidekiq_service/defaults/main.yaml
+---
+sidekiq_service:
+  name: decide-sidekiq
+  service_file: "/etc/systemd/system/decide-sidekiq.service"

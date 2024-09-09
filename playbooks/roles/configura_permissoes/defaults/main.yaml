@@ -1,0 +1,5 @@
+# roles/configura_permissoes/defaults/main.yaml
+
+regular_user: "decide"
+srv_directory: /srv
+umask_value: "002"

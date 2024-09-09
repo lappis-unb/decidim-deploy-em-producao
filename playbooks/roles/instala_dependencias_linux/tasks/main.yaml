@@ -1,0 +1,10 @@
+# roles/instala_dependencias_linux/tasks/main.yml
+- name: Update and upgrade apt packages
+  apt:
+    update_cache: yes
+    upgrade: "{{ apt_upgrade }}"
+
+- name: Install packages
+  apt:
+    name: "{{ apt_packages }}"
+    state: present

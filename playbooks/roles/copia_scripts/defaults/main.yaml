@@ -1,0 +1,7 @@
+# roles/copia_scripts/defaults/main.yaml
+
+---
+regular_user: decide
+scripts_para_copiar:
+  - { src: '../scripts/build_decidim_deploy.sh', dest: '/srv/build_decidim_deploy.sh', mode: '0775' }
+  # Adicione outros scripts aqui conforme necessário

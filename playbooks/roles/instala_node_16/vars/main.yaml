@@ -1,0 +1,5 @@
+# roles/instala_node_16/vars/main.yaml
+
+curl_package_name: curl
+nodejs_package_name: nodejs
+

@@ -1,0 +1,25 @@
+---
+# roles/instala_docker/tasks/main.yml
+- name: Ensure scripts have correct permissions
+  file:
+    path: "{{ item.path }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ regular_user }}"
+    group: "{{ regular_user }}"
+  with_items: "{{ scripts_para_configurar }}"
+  become: yes
+
+- name: Run build script
+  shell: |
+    export PATH="{{ build_script.environment.PATH }}"
+    /bin/bash {{ build_script.command }}
+  args:
+    executable: /bin/bash
+  register: build_output
+  become: yes
+  become_user: "{{ regular_user }}"
+
+- name: Debug Build Output
+  debug:
+    var: build_output.stdout_lines
+

@@ -1,0 +1,9 @@
+# roles/instala_ruby/defaults/main.yaml
+
+regular_user: decide
+rbenv_repo_url: "https://github.com/rbenv/rbenv.git"
+ruby_build_repo_url: "https://github.com/rbenv/ruby-build.git"
+ruby_version: "3.0.4"
+bundler_version: "~> 2.2.33"
+
+

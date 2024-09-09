@@ -1,0 +1,8 @@
+# roles/copia_arquivos/vars/main.yml
+
+arquivos_para_copiar:
+  - { src: '../arquivos_ambiente/etc/nginx/nginx.conf', dest: '/etc/nginx/nginx.conf', mode: '0644' }
+  # arquivo config do Decidim dentro do Nginx
+  - { src: '../arquivos_ambiente/etc/nginx/conf.d/decide.conf', dest: '/etc/nginx/conf.d/decide.conf', mode: '0644' }
+  - { src: '../arquivos_ambiente/etc/systemd/system/decide-puma.service', dest: '/etc/systemd/system/decide-puma.service', mode: '0644' }
+  - { src: '../arquivos_ambiente/etc/systemd/system/decide-sidekiq.service', dest: '/etc/systemd/system/decide-sidekiq.service', mode: '0644' }

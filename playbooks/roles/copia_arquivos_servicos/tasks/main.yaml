@@ -1,0 +1,7 @@
+# roles/copia_arquivos/tasks/main.yml
+- name: Copy service files
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+  with_items: "{{ arquivos_para_copiar }}"

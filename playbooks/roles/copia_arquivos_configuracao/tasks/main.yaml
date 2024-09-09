@@ -1,0 +1,11 @@
+---
+# roles/copia_arquivos_configuracao/tasks/main.yml
+- name: Copy configuration files
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ regular_user }}"
+    group: "{{ regular_user }}"
+    mode: "{{ item.mode }}"
+  with_items: "{{ arquivos_para_copiar }}"
+  become: yes
