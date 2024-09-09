@@ -1,3 +1,4 @@
+---
 # roles/instala_docker/tasks/main.yml
 - name: Ensure prerequisites are installed
   apt:

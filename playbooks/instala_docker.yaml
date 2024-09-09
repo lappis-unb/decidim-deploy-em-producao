@@ -2,28 +2,5 @@
 - name: Install Docker on Linux
   hosts: decidim_server_base
   become: yes
-  tasks:
-    - name: Ensure prerequisites are installed
-      apt:
-        name: "{{ docker_pre_requisites }}"
-        state: present
-        update_cache: yes
-
-    - name: Add Docker GPG key
-      apt_key:
-        url: "{{ docker_gpg_key_url }}"
-        state: present
-
-    - name: Add Docker apt repository
-      apt_repository:
-        repo: deb [arch={{ docker_architecture }}] {{ docker_repository_url }} {{ docker_distribution }} stable
-        state: present
-
-    - name: Update apt cache
-      apt:
-        update_cache: yes
-
-    - name: Install Docker
-      apt:
-        name: "{{ docker_packages }}"
-        state: present
+  roles:
+    - instala_docker

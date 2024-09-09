@@ -1,0 +1,22 @@
+---
+# roles/instala_node_16/tasks/main.yml
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Install curl
+  apt:
+    name: "{{ curl_package_name }}"
+    state: present
+
+- name: Download NodeSource installation script (on remote host)
+  shell: curl -sL {{ node_setup_url }} | bash -
+
+- name: Update apt cache after adding repository
+  apt:
+    update_cache: yes
+
+- name: Install Node.js 16
+  apt:
+    name: "{{ nodejs_package_name }}"
+    state: present

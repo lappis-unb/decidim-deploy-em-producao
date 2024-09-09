@@ -1,2 +1,14 @@
-docker_params:
-  - { docker_pre_requisites: "docker.io", docker_gpg_key_url: "present" , docker_architecture: }
+# roles/instala_docker/vars/main.yaml
+docker_pre_requisites:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg
+  - lsb-release
+
+docker_packages:
+- docker-ce
+- docker-ce-cli
+- containerd.io
+- docker-buildx-plugin
+- docker-compose-plugin

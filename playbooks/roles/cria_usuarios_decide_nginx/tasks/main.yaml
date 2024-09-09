@@ -1,0 +1,57 @@
+---
+# roles/cria_usuarios_decide_nginx/tasks/main.yml
+- name: Instalar pacote sudo (se necessário)
+  apt:
+    name: sudo
+    state: present
+    update_cache: yes
+  when: ansible_os_family == "Debian"
+
+- name: Criar usuário decide
+  user:
+    name: "{{ regular_user }}"
+    password: "{{ user_password }}"
+    shell: /bin/bash
+    create_home: yes
+
+- name: Adicionar usuário decide ao grupo sudo
+  user:
+    name: "{{ regular_user }}"
+    groups: sudo
+    append: yes
+
+- name: Conceder permissões de sudo sem senha para o usuário decide
+  lineinfile:
+    dest: /etc/sudoers.d/90-decide
+    line: "{{ regular_user }} ALL=(ALL) NOPASSWD:ALL"
+    create: yes
+    validate: 'visudo -cf %s'
+
+- name: Ensure decide group exists
+  group:
+    name: "{{ decide_group }}"
+    state: present
+
+- name: Create nginx user and add to decide group
+  user:
+    name: "{{ nginx_user }}"
+    groups: "{{ decide_group }}"
+    append: yes
+    state: present
+
+- name: Create puma-nginx group
+  group:
+    name: "{{ puma_nginx_group }}"
+    state: present
+
+- name: Add decide user to puma-nginx group
+  user:
+    name: "{{ regular_user }}"
+    groups: "{{ puma_nginx_group }}"
+    append: yes
+
+- name: Add nginx user to puma-nginx group
+  user:
+    name: "{{ nginx_user }}"
+    groups: "{{ puma_nginx_group }}"
+    append: yes

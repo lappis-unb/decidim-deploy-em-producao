@@ -1,0 +1,3 @@
+# roles/instala_yarn/vars/main.yaml
+
+yarn_package_name: "yarn"

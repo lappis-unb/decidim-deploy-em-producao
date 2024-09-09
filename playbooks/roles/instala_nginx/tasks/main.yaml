@@ -1,0 +1,16 @@
+---
+# roles/instala_nginx/tasks/main.yml
+- name: Update apt package index
+  apt:
+    update_cache: yes
+
+- name: Install Nginx
+  apt:
+    name: "{{ nginx_package_name }}"
+    state: present
+
+- name: Ensure Nginx is enabled and started
+  service:
+    name: nginx
+    state: started
+    enabled: yes

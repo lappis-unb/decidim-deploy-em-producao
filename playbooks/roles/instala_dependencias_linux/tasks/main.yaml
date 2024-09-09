@@ -2,10 +2,9 @@
 - name: Update and upgrade apt packages
   apt:
     update_cache: yes
-    upgrade: "{{ item.upgrade }}"
-  with_items: "{{ instala_dependencias_linux }}"
+    upgrade: "{{ apt_upgrade }}"
+
 - name: Install packages
   apt:
-    name: "{{ item.apt_packages }}"
+    name: "{{ apt_packages }}"
     state: present
-  with_items: "{{ instala_dependencias_linux }}"
