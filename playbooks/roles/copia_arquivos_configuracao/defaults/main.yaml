@@ -1,0 +1,8 @@
+# roles/copia_arquivos_configuracao/defaults/main.yaml
+
+regular_user: decide
+arquivos_para_copiar:
+  - { src: '../arquivos_ambiente/.env', dest: '/srv/decide/.env', mode: '0664' }
+  - { src: '../arquivos_ambiente/config/puma.production.rb', dest: '/srv/decide/config/puma.production.rb', mode: '0664' }
+  - { src: '../arquivos_ambiente/config/environments/production.rb', dest: '/srv/decide/config/environments/production.rb', mode: '0664' }
+  - { src: '../arquivos_ambiente/docker-compose-backstage.yml', dest: '/srv/decide/docker-compose-backstage.yml', mode: '0664' }

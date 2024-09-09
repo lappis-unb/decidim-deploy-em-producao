@@ -1,0 +1,6 @@
+# roles/clonar_repositorio_decidim/defaults/main.yaml
+
+regular_user: decide
+repo_url: "https://github.com/decidim/decidim.git"
+repo_tag: "v1.1.10"
+decidim_directory: "/srv/decide"

@@ -1,0 +1,11 @@
+---
+# roles/copia_scripts/tasks/main.yml
+- name: Copia scripts de deploy
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ regular_user }}"
+    group: "{{ regular_user }}"
+    mode: "{{ item.mode }}"
+  with_items: "{{ scripts_para_copiar }}"
+  become: yes

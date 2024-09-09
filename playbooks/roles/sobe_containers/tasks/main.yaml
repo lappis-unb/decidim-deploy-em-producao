@@ -1,0 +1,8 @@
+---
+# roles/sobe_containers/tasks/main.yml
+- name: Sobe Containers
+  command: "{{ item.command }}"
+  args:
+    chdir: "{{ item.chdir }}"
+  with_items: "{{ container_commands }}"
+  become: yes
