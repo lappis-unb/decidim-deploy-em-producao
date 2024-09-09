@@ -1,0 +1,7 @@
+# roles/instala_docker/defaults/main.yaml
+
+docker_gpg_key_url: "https://download.docker.com/linux/debian/gpg"
+docker_architecture: "amd64"
+docker_repository_url: "https://download.docker.com/linux/debian"
+docker_distribution: "buster"
+

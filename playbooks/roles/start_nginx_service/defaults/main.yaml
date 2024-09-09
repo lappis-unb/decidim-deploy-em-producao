@@ -1,0 +1,9 @@
+# roles/start_nginx_service/defaults/main.yaml
+puma_socket:
+  path: /srv/decide/tmp/sockets/puma.sock
+  owner: nginx
+  group: decide
+  mode: '0777'
+
+nginx_service:
+  name: nginx

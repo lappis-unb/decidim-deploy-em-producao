@@ -1,0 +1,6 @@
+# roles/start_puma_service/defaults/main.yaml
+puma_service:
+  name: decide-puma
+  service_file: "/etc/systemd/system/decide-puma.service"
+  socket_path: "/srv/decide/tmp/sockets/puma.sock"
+  socket_timeout: 30

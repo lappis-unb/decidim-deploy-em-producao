@@ -1,0 +1,10 @@
+---
+# roles/list_running_services/tasks/main.yml
+- name: List all running systemctl services
+  command: systemctl list-units --type=service --state=running
+  register: running_services
+  become: yes
+
+- name: Print running services
+  debug:
+    var: running_services.stdout_lines

@@ -1,0 +1,29 @@
+---
+# roles/start_sidekiq_service/tasks/main.yml
+- name: Ensure Sidekiq service file exists
+  stat:
+    path: "{{ sidekiq_service.service_file }}"
+  register: sidekiq_service_file
+  become: yes
+
+- name: Fail if Sidekiq service file does not exist
+  fail:
+    msg: "Sidekiq service file does not exist at {{ sidekiq_service.service_file }}"
+  when: not sidekiq_service_file.stat.exists
+
+- name: Reload systemd to recognize new service
+  command: systemctl daemon-reload
+  when: sidekiq_service_file.stat.exists
+  become: yes
+
+- name: Enable Sidekiq service
+  systemd:
+    name: "{{ sidekiq_service.name }}"
+    enabled: yes
+  become: yes
+
+- name: Start Sidekiq service
+  systemd:
+    name: "{{ sidekiq_service.name }}"
+    state: started
+  become: yes

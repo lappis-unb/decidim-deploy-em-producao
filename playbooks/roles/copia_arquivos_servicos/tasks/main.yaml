@@ -1,5 +1,5 @@
 # roles/copia_arquivos/tasks/main.yml
-- name: Copiar arquivos de configuração
+- name: Copy service files
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
